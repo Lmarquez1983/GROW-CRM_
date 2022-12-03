@@ -1,0 +1,121 @@
+﻿@model IEnumerable<GROW_CRM.Models.Category>
+
+@{
+    ViewData["Title"] = "Category Index";
+}
+
+<h1>Category Index</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-success"> <i class="fa-solid fa-circle-plus"></i> New Category</a>
+</p>
+<form asp-action="Index" method="get">
+    @if(!(Context.Request.Query["pageSizeID"].FirstOrDefault() is null))
+    {
+        <input type="hidden" name="pageSizeID" value="@Context.Request.Query["pageSizeID"]"/>   
+    } 
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+    <div class="form-horizontal">
+        <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+            <i class="fa-solid fa-filter"></i> Filter/Search
+        </button>
+        <div class="collapse @(ViewData["Filtering"])" id="collapseFilter">
+            <div class="card card-body bg-light">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Search Item Name:</label>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-4 align-self-end">
+                        <button type="submit" class="btn btn-outline-primary" name="actionButton">
+                            <i class='fa-solid fa-filter'></i> Filter
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-dark"> <i class="fa-solid fa-arrows-rotate"></i> Clear</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+    <table class="table table-striped rounded-lg">
+        @{
+            string bold = "font-weight-bold";
+
+            string direction = "▼";
+            if (ViewData["sortDirection"].ToString() == "desc")
+            {
+                direction = "▲";
+            }
+        }
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    <input type="submit" name="actionButton" value="Name" class="btn btn-link @bold" />
+                    <span class="text-primary">@direction</span>
+                </th>
+                <th>
+                    <span class="text-black-50 btn btn-link">Items</span>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => category.Name)
+                    </td>
+                    <td>
+                        @{
+                            int fileCount = category.Items.Count;
+                            if (fileCount > 0)
+                            {
+                                var firstItem = category.Items.FirstOrDefault(); ;
+                                if (fileCount > 1)
+                                {
+                                    <a class="" role="button" data-toggle="collapse" href="#collapseDocs@(category.ID)" aria-expanded="false" aria-controls="collapseDocs@(category.ID)">
+                                        <span class="badge badge-info">@fileCount</span> Items...
+                                    </a>
+                                    <div class="collapse" id="collapseDocs@(category.ID)">
+                                        @{
+                                            foreach (var item in category.Items)
+                                            {
+                                                <a asp-action="Details" asp-controller="Items" asp-route-id="@item.ID">@item.Name</a> <br />
+                                            }
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <a asp-action="Details" asp-controller="Items" asp-route-id="@firstItem.ID">@firstItem.Name</a>
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" class="text-warning h4" data-toggle="tooltip" data-placement="top" title="Edit" asp-route-id="@category.ID">
+                            <i class='bx bxs-edit-alt'></i>
+                        </a>
+                        
+                        <a asp-action="Details" class="h4" data-toggle="tooltip" data-placement="top" title="Details" asp-route-id="@category.ID"> <i class='bx bx-info-square'></i></a> 
+                        <a asp-action="Delete" class="text-danger h4" data-toggle="tooltip" data-placement="top" title="Delete" asp-route-id="@category.ID"> <i class='bx bx-minus-circle'></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    <partial name="_PagingNavBar" />
+</form>
+@section Scripts {
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+}

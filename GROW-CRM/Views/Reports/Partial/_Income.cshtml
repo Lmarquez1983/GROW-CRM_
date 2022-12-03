@@ -1,0 +1,42 @@
+﻿@using GROW_CRM.ViewModels.ReportsViewModels
+
+@{
+    <div class="row">
+        <a asp-action="DownloadIncomes" class="btn btn-info float-left" style="margin-left: 15px">Download Household Income</a>
+    </div>
+    <br />
+    <div class="table-responsive">
+    <table class="table table-striped rounded-lg">
+        <thead class="thead-dark">
+            <tr>
+                @foreach (string header in (string[])ViewBag.Headers)
+                {
+                    <th>@header</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (HouseholdInformation hi in ViewBag.Report)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => hi.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => hi.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => hi.Age)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => hi.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => hi.TotalIncome)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+}

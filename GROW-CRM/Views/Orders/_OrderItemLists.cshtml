@@ -1,0 +1,65 @@
+﻿<div class="table-responsive">
+                            <table class="table table-striped rounded-lg">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            Item
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th>
+                                            Price
+                                        </th>
+                                        <th>
+
+                                        </th>
+                                    </tr>                                    
+                                </thead>
+                                <tbody>
+                            @{
+                                //double subtotal = 0;
+                                //double taxes = 0;
+                                double total = 0;
+
+                                foreach (var item in ViewBag.OrderItems)
+                                {
+                                    total += (item.Item.PriceAfterDiscount * item.Quantity);
+                                        @:<tr><td>
+                                            @item.Item.Name
+                                        @:</td><td>
+                                            @item.Quantity
+                                        @:</td><td>
+                                            @item.Item.PriceAfterDiscount.ToString("c")
+                                        @:</td><td>
+                                        @:&nbsp; &nbsp;
+                                            <button class="btn btn-sm modal-link" tag="@item.ID" name="EditForm" data-toggle="modal" data-target="#theMemberIncomeSituationModal" title="Edit @item.Item.Code" type="button">&#x270D;</button>
+                                            <button class="btn btn-sm modal-link" tag="@item.ID" name="DeleteForm" data-toggle="modal" data-target="#theMemberIncomeSituationModal" title="Delete @item.Item.Code" type="button">&#x274C;</button>
+                                        @:</td></tr>
+                                }
+                                @*<tr>
+                                    <td>SubTotal</td>
+                                    <td>@subtotal</td>
+                                    <td><input type="hidden" name="Subtotal" value="@subtotal"/></td>
+                                </tr>
+
+                                taxes = Math.Round(subtotal * 0.15, 2);
+
+                                <tr>
+                                    <td>GST/HST</td>
+                                    <td>@taxes</td>
+                                    <td><input type="hidden" name="Taxes" value="@taxes"/></td>
+                                </tr>
+
+                                total = subtotal + taxes;*@
+                                <tr>
+                                      <td></td>
+                                        <td></td>
+                                        <td><b>Total: </b>$@total.ToString("N2")</td>
+                                        <td><input type="hidden" name="Total" value="@total" /></td>
+                                      </tr>
+
+                            }
+</tbody>
+</table>
+</div>

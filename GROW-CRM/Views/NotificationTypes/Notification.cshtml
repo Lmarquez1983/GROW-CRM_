@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Notification Email";
+}
+
+<h1>Notification Email</h1>
+
+<h2>Message to Members in @ViewData["Type"] list.</h2>
+
+<hr />
+<form asp-action="Notification">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="text-danger">@ViewData["Message"]</div>
+            <hr />
+            <input type="hidden" name="id" value="@ViewData["id"]" />
+            @*<input type="text" name="householdStatusID" value="@ViewData["householdStatusID"]" />*@
+            <label>Select the list of recipients (by member status)</label>
+            <label for="HouseholdStatusID" class="control-label"></label>
+            <br />
+            <select id="HouseholdStatusID" name="householdStatusID" class="form-control" asp-items="ViewBag.householdStatusID">
+            <option value="">Select...</option>
+            </select>
+            <br />
+            <span for="HouseholdStatusID" class="text-danger"></span>
+            <div class="form-group">
+                <label for="Subject" class="control-label">Email Subject</label>
+                <input type="text" id="Subject" name="Subject" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="emailContent" class="control-label">Message Content</label>
+                <textarea id="emailContent" name="emailContent" rows="5" cols="40" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send E-mail" class="btn btn-outline-primary">
+            </div>
+
+        </div>
+    </div>
+</form>
+<div>
+    <a asp-action="Index" asp-controller="Lookups" asp-route-Tab="MedicalTrialsTab">Back to Lookup List</a>
+</div>
